@@ -1,0 +1,118 @@
+﻿<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <script src="../WebResources/ClientGlobalContext.js.aspx" type="text/javascript"></script>
+    <script src="../WebResources/whb_Slaremainder" type="text/javascript"></script>
+    <script type="text/javascript">
+ //alert("Test");
+//debugger;
+        var DialogOption = new window.parent.Xrm.DialogOptions;
+DialogOption.width = 800; DialogOption.height = 600;
+var casecount = getCaseServices();
+
+if (casecount.value.length > 0)
+{
+    window.parent.Xrm.Internal.openDialog("https://whitbreadguestrelationspreprod.crm4.dynamics.com/WebResources/whb_Slaremainder", DialogOption, null, null, CallbackFunction);
+}
+else {
+    if(typeof(Storage) !="undefined")
+    {
+
+        if (sessionStorage.getItem("Flag") == null)
+        {
+
+            window.parent.Xrm.Internal.openDialog("https://whitbreadguestrelationspreprod.crm4.dynamics.com/WebResources/whb_Slaremainder", DialogOption, null, null, CallbackFunction);
+          //  localStorage.setItem("Flag", "true");
+        }
+    }
+
+
+}
+
+
+
+
+function CallbackFunction(returnValue) { }
+function getCaseServices() {
+    debugger
+    try {
+        var accountServices = null;
+        var ownerid = Xrm.Page.context.getUserId().slice(1, -1);
+var date = new Date();
+        var updatedmonth = date.getMonth() + 1;
+        var today = date.getFullYear() + "-" + updatedmonth + "-" + date.getDate();
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+             url: Xrm.Page.context.getClientUrl() + "/api/data/v8.2/incidents?$select=ticketnumber,incidentid,title,whb_internalsla,statuscode,_whb_awaitinginternalcommunicationfrom_value,_whb_externaldepartmentassistance_value&$filter= whb_internalsla le " + today + " and (statuscode eq 130570000 or statuscode eq 130570011) and _ownerid_value eq " + ownerid + "&$orderby=whb_internalsla desc",            // url: Xrm.Page.context.getClientUrl() + "/api/data/v8.2/incidents?$select=ticketnumber,incidentid,title,whb_internalsla&$filter=statuscode eq 130570000",
+            beforeSend: function (XMLHttpRequest) {
+                XMLHttpRequest.setRequestHeader("OData-MaxVersion", "4.0");
+                XMLHttpRequest.setRequestHeader("OData-Version", "4.0");
+                XMLHttpRequest.setRequestHeader("Accept", "application/json");
+                XMLHttpRequest.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            },
+            async: false,
+            success: function (data, textStatus, xhr) {
+                var results = data;
+                accountServices = results;
+            },
+            error: function (xhr, textStatus, errorThrown) {
+
+                ErrorHandling("SLA Remainder", "SLA Remainder", "getCaseServices", xhr);
+                //Xrm.Utility.alertDialog(textStatus + " " + errorThrown);
+            }
+        });
+        return accountServices;
+    } catch (e) {
+        ErrorHandling("SLA Remainder", "SLA Remainder", "getCaseServices", e);
+    }
+
+}
+
+    </script>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body style="word-wrap: break-word;">
+
+
+
+    <br>
+
+
+
+</body>
+</html>
